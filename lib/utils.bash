@@ -42,7 +42,16 @@ download_release() {
   filename="$2"
 
   # TODO: Adapt the release URL convention for powershell
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  #  url="$GH_REPO/archive/v${version}.tar.gz"
+  #  powershell-7.1.3-linux-x64.tar.gz
+  #  powershell-7.1.3-osx-x64.tar.gz
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    url="$GH_REPO/releases/download/v${version}/powershell-${version}-linux-x64.tar.gz"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    url="$GH_REPO/releases/download/v${version}/powershell-${version}-osx-x64.tar.gz"
+  else
+    fail "Unsupported OS"
+  fi
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
